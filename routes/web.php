@@ -14,3 +14,7 @@
 Route::get('/', function () {
     return redirect('/customers');
 });
+
+Route::get('/customers', 'CustomerController@index');
+Route::post('/customers', 'CustomerController@store');
+Route::get('/getCustomers', 'CustomerController@listCustomer');
