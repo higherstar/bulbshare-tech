@@ -48,8 +48,8 @@ class CustomerController extends Controller
         $customer->save();
 
         return [
-            'status' => 'success',
-            'msg' => 'Customer is created.'
+            'error' => false,
+            'message' => 'Customer is created.',
         ];
     }
 
@@ -64,27 +64,37 @@ class CustomerController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\models\Customer  $customer
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Customer $customer)
+    public function edit(int $id)
     {
-        //
+        return Customer::findorfail($id);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\models\Customer  $customer
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Customer $customer)
+    public function update(int $id, CreateCustomerRequest $request)
     {
         //
+        $data = $request->validated();
+        $customer = Customer::find($id);
+
+        try {
+            $customer->fill($data);
+            $customer->save();
+
+            if($request->ajax()){
+                $data = array(
+                    'error' => false,
+                    'message' => 'Customer is saved.'
+                );
+                return response()->json($data);
+            }
+        } catch (\Exception $e) {
+            if($request->ajax()){
+                $data = array(
+                    'error' => true,
+                    'message' => 'Error in saving Customer!.'
+                );
+                return response()->json($data);
+            }
+        }
     }
 
     /**

@@ -27,13 +27,13 @@ class CreateCustomerRequest extends FormRequest
             'company' => 'required|max:50',
             'first_name' => 'required|max:50',
             'last_name' => 'required|max:50',
-            'email_address' => 'email:rfc|max:50',
-            'job_title' => 'string', 'max:50',
-            'business_phone' => 'numeric', 'max:25',
-            'address' => 'string',
-            'city' => 'string', 'max:50',
-            'zip_postal_code' => 'numeric', 'max:15',
-            'country_region' => 'string', 'max:50',
+            'email_address' => 'sometimes|email:rfc|max:50',
+            'job_title' => 'sometimes|string|max:50',
+            'business_phone' => 'sometimes|string|max:25',
+            'address' => 'sometimes|string',
+            'city' => 'sometimes|string|max:50',
+            'zip_postal_code' => 'sometimes|string|max:15',
+            'country_region' => 'sometimes|string|max:50',
         ];
     }
 
