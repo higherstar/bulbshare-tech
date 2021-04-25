@@ -164,7 +164,7 @@
                 "url": "/getCustomers",
             },
             "columns": columns,
-            "aoColumnDefs": [{ "bSortable": false, "aTargets": [ 0, 4, 5, 6, 9, 11] }],
+            "aoColumnDefs": [{ "bSortable": false, "aTargets": [ 0, 4, 5, 6, 9, 11, 12, 13] }],
             "createdRow": function(row, data, index) {
                 let url='{{ url('/') }}';
                 let actionHtml='<a href="/customers">\n' +

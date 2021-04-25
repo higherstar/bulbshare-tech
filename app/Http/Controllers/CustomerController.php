@@ -18,7 +18,8 @@ class CustomerController extends Controller
     {
         $customers = Customer::get();
         $cols = ['company' => 'Company', 'first_name' => 'First Name', 'last_name' => 'Last Name', 'email_address' => 'Email Address', 'job_title' => 'Job Title',
-            'business_phone' => 'Business Phone', 'address' => 'Address', 'city' => 'City', 'zip_postal_code' => 'Zip Postal Code', 'country_region' => 'Country Region', 'id' => 'Action'];
+            'business_phone' => 'Business Phone', 'address' => 'Address', 'city' => 'City', 'zip_postal_code' => 'Zip Postal Code', 'country_region' => 'Country Region',
+            'orders_count' => 'Orders Total', 'total_value' => 'Orders Total Value', 'id' => 'Action'];
         $data = compact('cols', 'customers');
         return view('customer', $data);
     }
@@ -103,26 +104,28 @@ class CustomerController extends Controller
     public function listCustomer()
     {
         extract(request()->all());
-        $customers = Customer::query()
+
+        $query = Customer::query()
+            ->withCount('orders')
             ->orderBy($this->CustomerCols[$order[0]['column']], $order[0]['dir'])
-            ->skip($start)
             ->where('first_name', 'LIKE', '%' . $search['value'] . '%')
             ->orWhere('last_name', 'LIKE', '%' . $search['value'] . '%')
             ->orWhere('company', 'LIKE', '%' . $search['value'] . '%')
             ->orWhere('address', 'LIKE', '%' . $search['value'] . '%')
             ->orWhere('city', 'LIKE', '%' . $search['value'] . '%')
-            ->orWhere('country_region', 'LIKE', '%' . $search['value'] . '%')
+            ->orWhere('country_region', 'LIKE', '%' . $search['value'] . '%');
+
+        $count = $query->count();
+
+        $customers = $query
+            ->skip($start)
             ->take($length)
             ->get();
-        $count =Customer::query()
-            ->orderBy($this->CustomerCols[$order[0]['column']], $order[0]['dir'])
-            ->where('first_name', 'LIKE', '%' . $search['value'] . '%')
-            ->orWhere('last_name', 'LIKE', '%' . $search['value'] . '%')
-            ->orWhere('company', 'LIKE', '%' . $search['value'] . '%')
-            ->orWhere('address', 'LIKE', '%' . $search['value'] . '%')
-            ->orWhere('city', 'LIKE', '%' . $search['value'] . '%')
-            ->orWhere('country_region', 'LIKE', '%' . $search['value'] . '%')
-            ->count();
+
+        foreach ($customers as $customer) {
+            $customer->total_value = $customer->getTotalPrice();
+        }
+
         $data = [
             'draw' => $draw,
             'recordsTotal' => Customer::count(),
