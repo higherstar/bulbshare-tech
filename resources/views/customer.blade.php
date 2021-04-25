@@ -17,6 +17,12 @@
         .form-group label {
             min-width: 200px;
         }
+
+        .ui-dialog-titlebar-close {
+            opacity: 0;
+        }
+
+
     </style>
 @endsection
 @section('content')
@@ -232,20 +238,20 @@
                             "Delete ": function() {
                                 let rowId=$(this).data('id');
                                 $( this ).dialog( "close" );
-                                let url = '/customers';
-                                let finalUrl = url.replace(/ID/g,rowId);
+                                let url = `/deleteCustomer/${rowId}`;
                                 $.ajax({
-                                    url: finalUrl,
+                                    url: url,
                                     type: 'DELETE',
                                     data:{
                                         'id': rowId,
                                         '_token': '{{ csrf_token() }}',
                                     },
                                     success: function(result) {
-                                        window.location=location.href;
+                                        $( ".conf-modal-dialog-"+rowId).data('id',rowId).dialog("close");
+                                        customerList.clear().draw();
                                     },
                                     error: function(result){
-                                        window.location=location.href;
+
                                     }
                                 });
                             },

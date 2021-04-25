@@ -13,5 +13,5 @@
 <link rel="stylesheet" type="text/css" href="{{ url('/fonts/font-awesome/css/font-awesome.min.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ url('/fonts/feather/style.min.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ url('/css/toastr.css') }}">
-
+<link rel="stylesheet" type="text/css" href="{{ url('/css/sweetalert.css') }}">
 @yield('extra-css')

@@ -7,6 +7,8 @@
 <script src="{{ url('/js/forms/wizard-steps.min.js') }}"></script>
 <script src="{{ url('/js/jquery-validate/jquery.validate.min.js') }}"></script>
 <script src="{{ url('/js/jquery-validate/additional-methods.min.js') }}"></script>
+<script src="{{ url('/js/extensions/sweetalert.min.js') }}"></script>
+<script src="{{ url('/js/core/libraries/dialog-tooltip.min.js') }}"></script>
 
 <script type="text/javascript">
     jQuery(document).ready(function($){

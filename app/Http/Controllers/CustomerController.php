@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\models\Customer;
+use App\models\Order;
 use Illuminate\Http\Request;
 use App\Http\Requests\CreateCustomerRequest;
 
@@ -143,5 +144,38 @@ class CustomerController extends Controller
             'data' => $customers
         ];
         return response()->json($data);
+    }
+
+    /*
+     * Delete Customer
+     */
+    public function delete (int $id, Request $request) {
+        try {
+            Order::query()
+                ->where("customer_id", $id)
+                ->update([
+                    "customer_id" => null
+                ]);
+
+            $customer = Customer::findorfail($id);
+            $customer->delete();
+
+            if($request->ajax()){
+                $data = array(
+                    'error' => false,
+                    'message' => 'Customer is removed.'
+                );
+                return response()->json($data);
+            }
+        } catch (\Exception $e) {
+
+            if($request->ajax()){
+                $data = array(
+                    'error' => true,
+                    'message' => 'Error in deleting Customer!'
+                );
+                return response()->json($data);
+            }
+        }
     }
 }

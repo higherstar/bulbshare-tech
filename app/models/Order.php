@@ -8,6 +8,7 @@ class Order extends Model
 {
     //
     protected $table = 'orders';
+    public $timestamps = false;
 
     public function customer()
     {
