@@ -22,6 +22,10 @@
             opacity: 0;
         }
 
+        .customerList > thead > tr > th:last-child {
+            min-width: 100px;
+        }
+
 
     </style>
 @endsection
